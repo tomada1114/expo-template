@@ -16,6 +16,7 @@ This is an Expo React Native template project featuring:
 - **TypeScript** with strict mode enabled
 - **Tamagui** as the UI system with theme support
 - **React Hook Form + Zod** for form validation
+- **Zustand** for global state management with persistence
 - **ESLint + Prettier** with comprehensive code quality setup
 
 ## Development Commands
@@ -42,14 +43,16 @@ The project integrates several key technologies in a specific way:
 1. **Tamagui Provider Hierarchy**: `TamaguiProvider` wraps `PortalProvider` which wraps `ThemeProvider` in `app/_layout.tsx`
 2. **Theme System**: Automatic dark/light theme detection via `useColorScheme()` with React Navigation theme integration
 3. **Form Validation Pattern**: React Hook Form controller + Zod resolver + Tamagui UI components
-4. **Type Safety**: TypeScript strict mode with Zod schema inference for form data types
+4. **State Management**: Zustand stores with AsyncStorage persistence and DevTools integration
+5. **Type Safety**: TypeScript strict mode with Zod schema inference for form data types
 
 ### File Structure
 
 - `/app` - Expo Router file-based routing (main application)
 - `/app-example` - Original Expo template code (preserved as reference)
-- `/components` - Reusable UI components (currently contains SampleForm)
-- `/schemas` - Zod validation schemas (contains sampleForm.ts as example)
+- `/components` - Reusable UI components (SampleForm, StoreExample)
+- `/schemas` - Zod validation schemas (sampleForm.ts)
+- `/stores` - Zustand state management stores with types
 - `/assets` - Static assets (fonts, images)
 - `tamagui.config.ts` - Tamagui configuration using default v4 config
 
@@ -86,6 +89,39 @@ const { control, handleSubmit } = useForm<FormData>({
 - Always-visible calendar with `display={Platform.OS === 'ios' ? 'compact' : 'calendar'}`
 - Date formatting to YYYY-MM-DD format for form submission
 - Platform-specific handling for iOS/Android differences
+
+**State Management Pattern:**
+
+```typescript
+// 1. Define types in /stores/types.ts
+export interface StoreState {
+  data: any;
+}
+export interface StoreActions {
+  action: () => void;
+}
+export type Store = StoreState & StoreActions;
+
+// 2. Create store with persistence in /stores/[storeName].ts
+const useStore = create<Store>()(
+  devtools(
+    persist(
+      set => ({
+        data: null,
+        action: () => set({ data: newData }),
+      }),
+      {
+        name: 'store-name',
+        storage: createJSONStorage(() => AsyncStorage),
+      }
+    )
+  )
+);
+
+// 3. Use in components with selectors
+const data = useStore(state => state.data);
+const action = useStore(state => state.action);
+```
 
 ## 品質チェックとコミットの指針
 
@@ -124,6 +160,7 @@ The project uses Husky + lint-staged for automated code quality checks:
 ### Template Features
 
 - **Sample Form**: `/components/SampleForm.tsx` demonstrates React Hook Form + Zod + Tamagui integration
+- **State Management Example**: `/components/StoreExample.tsx` demonstrates Zustand usage patterns
 - **Reset Script**: `npm run reset-project` moves example code to `/app-example` for clean project start
 - **TypeScript Configuration**: Strict mode enabled with path alias `@/*` mapping to project root
 
@@ -132,12 +169,14 @@ The project uses Husky + lint-staged for automated code quality checks:
 1. **Tamagui Babel Parser**: Avoid object literals in style props; use React Native View component with style prop
 2. **Form Validation**: Use `mode: 'onChange'` and manual `trigger()` for real-time validation
 3. **Checkbox Icons**: Require explicit `<Check />` import from `@tamagui/lucide-icons`
+4. **Tamagui Theme Props**: Some theme values like `"gray"` are not valid; use `"blue"`, `"red"`, `"green"`, `"yellow"` instead
 
 ### Dependencies Overview
 
 - **Core**: Expo 53, React Native 0.79.5, React 19.0.0
 - **UI**: Tamagui 1.132.20 with Lucide icons and Portal provider
 - **Forms**: React Hook Form 7.62.0 + @hookform/resolvers 5.2.1 + Zod 4.0.17
+- **State Management**: Zustand 5.0.7 with AsyncStorage 2.1.2 for persistence
 - **Date Selection**: @react-native-community/datetimepicker 8.4.1 (Expo-compatible)
 - **Development**: TypeScript 5.8.3, ESLint 9.25.0, Prettier 3.6.2, Husky 9.1.7
 
