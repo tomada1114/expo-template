@@ -1,50 +1,100 @@
-# Welcome to your Expo app 👋
+# Expo テンプレートリポジトリ
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## 概要
 
-## Get started
+このリポジトリは、Expo React Native プロジェクトの汎用テンプレートとして設計されています。
+高品質なコードベースと完備されたテスト環境を提供し、新規プロジェクトの立ち上げを効率化します。
 
-1. Install dependencies
+## 目的
 
+- **再利用性**: 今後のExpoプロジェクトで繰り返し使用できる基盤を提供
+- **品質保証**: コード品質を担保するツールと設定を事前に準備
+- **開発効率**: ベストプラクティスに基づいた構成で開発をスムーズに開始
+- **保守性**: テスト環境とCI/CDの基本設定により、長期的な保守を支援
+
+## 主な機能
+
+### 開発環境
+- **Expo SDK ~53.0** (React Native 0.79.5, React 19.0.0)
+- **TypeScript** (strict mode有効)
+- **Expo Router** によるファイルベースのルーティング
+- **ESLint** による静的コード解析
+
+### コード品質
+- ESLintによる自動コードチェック
+- TypeScriptの厳格な型チェック
+- 統一されたコーディング規約
+
+### テスト環境
+- Jestによる単体テスト環境（セットアップ予定）
+- E2Eテストフレームワーク（実装予定）
+- テストカバレッジレポート（設定予定）
+
+### CI/CD
+- GitHub Actions基本設定（構築予定）
+- 自動ビルド・デプロイパイプライン（構築予定）
+
+## プロジェクト構造
+
+```
+/
+├── app/              # アプリケーションのルートとスクリーン
+├── app-example/      # スターターテンプレートコード
+├── assets/           # 静的アセット（フォント、画像）
+├── components/       # 再利用可能なUIコンポーネント
+├── hooks/            # カスタムReactフック
+├── constants/        # アプリケーション定数
+└── tests/            # テストファイル（作成予定）
+```
+
+## 使い方
+
+### テンプレートとして新規プロジェクトを開始
+
+1. このリポジトリをテンプレートとして使用:
+   ```bash
+   # GitHubの「Use this template」ボタンを使用するか、
+   # リポジトリをクローンして新規プロジェクトとして開始
+   ```
+
+2. 依存関係をインストール:
    ```bash
    npm install
    ```
 
-2. Start the app
-
+3. 開発サーバーを起動:
    ```bash
-   npx expo start
+   npm start
    ```
 
-In the output, you'll find options to open the app in a
+### 開発コマンド
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+| コマンド | 説明 |
+|---------|------|
+| `npm start` | 開発サーバーを起動 |
+| `npm run android` | Android向け開発ビルドを起動 |
+| `npm run ios` | iOS向け開発ビルドを起動 |
+| `npm run web` | Web向け開発ビルドを起動 |
+| `npm run lint` | ESLintを実行 |
+| `npm run reset-project` | プロジェクトをリセット |
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## 今後の実装予定
 
-## Get a fresh project
+- [ ] Jest設定とユニットテストのサンプル
+- [ ] Detoxによるe2eテスト環境
+- [ ] Prettierの設定と統合
+- [ ] Husky + lint-stagedによるpre-commit hooks
+- [ ] GitHub Actionsワークフロー
+- [ ] Storybookの統合
+- [ ] 環境変数管理の最適化
+- [ ] パフォーマンスモニタリングツール
+- [ ] エラーハンドリングとロギングの標準化
+- [ ] アクセシビリティ対応のガイドライン
 
-When you're ready, run:
+## ライセンス
 
-```bash
-npm run reset-project
-```
+[ライセンスを選択してください]
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## 貢献
 
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+このテンプレートリポジトリの改善提案やバグ報告は、Issueまたはプルリクエストでお願いします。

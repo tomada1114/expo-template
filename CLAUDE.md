@@ -2,6 +2,18 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## リポジトリの目的
+
+このリポジトリは、Expo開発における汎用的なテンプレートリポジトリとして設計されています。
+今後のプロジェクトで再利用可能な、高品質なコードベースと完備されたテスト環境を提供することを目的としています。
+
+### 主な特徴
+- コード品質を担保する各種リンター・フォーマッター設定
+- テスト環境の完全なセットアップ
+- ベストプラクティスに基づいたプロジェクト構造
+- CI/CDパイプラインの基本設定
+- 開発効率を向上させる各種ツールの統合
+
 ## Project Overview
 
 This is an Expo React Native project created with `create-expo-app`. It uses:
