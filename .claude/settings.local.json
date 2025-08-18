@@ -2,7 +2,14 @@
   "permissions": {
     "allow": [
       "mcp__context7__resolve-library-id",
-      "mcp__context7__get-library-docs"
+      "mcp__context7__get-library-docs",
+      "Bash(npm install:*)",
+      "Bash(mkdir:*)",
+      "Bash(npm run lint)",
+      "Bash(npm run format:check:*)",
+      "Bash(npm run format:*)",
+      "Bash(npm run type-check:*)",
+      "Bash(git add:*)"
     ],
     "deny": [],
     "ask": []

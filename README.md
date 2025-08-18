@@ -15,22 +15,26 @@
 ## 主な機能
 
 ### 開発環境
+
 - **Expo SDK ~53.0** (React Native 0.79.5, React 19.0.0)
 - **TypeScript** (strict mode有効)
 - **Expo Router** によるファイルベースのルーティング
 - **ESLint** による静的コード解析
 
 ### コード品質
+
 - ESLintによる自動コードチェック
 - TypeScriptの厳格な型チェック
 - 統一されたコーディング規約
 
 ### テスト環境
+
 - Jestによる単体テスト環境（セットアップ予定）
 - E2Eテストフレームワーク（実装予定）
 - テストカバレッジレポート（設定予定）
 
 ### CI/CD
+
 - GitHub Actions基本設定（構築予定）
 - 自動ビルド・デプロイパイプライン（構築予定）
 
@@ -52,12 +56,14 @@
 ### テンプレートとして新規プロジェクトを開始
 
 1. このリポジトリをテンプレートとして使用:
+
    ```bash
    # GitHubの「Use this template」ボタンを使用するか、
    # リポジトリをクローンして新規プロジェクトとして開始
    ```
 
 2. 依存関係をインストール:
+
    ```bash
    npm install
    ```
@@ -69,14 +75,14 @@
 
 ### 開発コマンド
 
-| コマンド | 説明 |
-|---------|------|
-| `npm start` | 開発サーバーを起動 |
-| `npm run android` | Android向け開発ビルドを起動 |
-| `npm run ios` | iOS向け開発ビルドを起動 |
-| `npm run web` | Web向け開発ビルドを起動 |
-| `npm run lint` | ESLintを実行 |
-| `npm run reset-project` | プロジェクトをリセット |
+| コマンド                | 説明                        |
+| ----------------------- | --------------------------- |
+| `npm start`             | 開発サーバーを起動          |
+| `npm run android`       | Android向け開発ビルドを起動 |
+| `npm run ios`           | iOS向け開発ビルドを起動     |
+| `npm run web`           | Web向け開発ビルドを起動     |
+| `npm run lint`          | ESLintを実行                |
+| `npm run reset-project` | プロジェクトをリセット      |
 
 ## 今後の実装予定
 
