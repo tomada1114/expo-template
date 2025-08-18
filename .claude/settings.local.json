@@ -10,7 +10,8 @@
       "Bash(npm run format:*)",
       "Bash(npm run type-check:*)",
       "Bash(git add:*)",
-      "Bash(npm run lint:*)"
+      "Bash(npm run lint:*)",
+      "Bash(npx expo install:*)"
     ],
     "deny": [],
     "ask": []

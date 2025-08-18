@@ -17,6 +17,7 @@ import {
 } from 'tamagui';
 
 import SampleForm from '../components/SampleForm';
+import StoreExample from '../components/StoreExample';
 
 export default function Index() {
   const [open, setOpen] = useState(false);
@@ -146,6 +147,8 @@ export default function Index() {
           </YStack>
 
           <Separator borderColor="$borderColor" />
+
+          <StoreExample />
 
           <SampleForm />
 
