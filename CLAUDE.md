@@ -7,22 +7,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 このリポジトリは、Expo開発における汎用的なテンプレートリポジトリとして設計されています。
 今後のプロジェクトで再利用可能な、高品質なコードベースと完備されたテスト環境を提供することを目的としています。
 
-### 主な特徴
-
-- コード品質を担保する各種リンター・フォーマッター設定
-- テスト環境の完全なセットアップ
-- ベストプラクティスに基づいたプロジェクト構造
-- CI/CDパイプラインの基本設定
-- 開発効率を向上させる各種ツールの統合
-
 ## Project Overview
 
-This is an Expo React Native project created with `create-expo-app`. It uses:
+This is an Expo React Native template project featuring:
 
 - **Expo SDK ~53.0** with React Native 0.79.5 and React 19.0.0
-- **Expo Router** for file-based navigation with typed routes enabled
+- **Expo Router** for file-based navigation with typed routes
 - **TypeScript** with strict mode enabled
-- **ESLint** with Expo configuration
+- **Tamagui** as the UI system with theme support
+- **React Hook Form + Zod** for form validation
+- **ESLint + Prettier** with comprehensive code quality setup
 
 ## Development Commands
 
@@ -30,33 +24,61 @@ This is an Expo React Native project created with `create-expo-app`. It uses:
 - `npm start` or `npx expo start` - Start development server
 - `npm run android` - Start Android development build
 - `npm run ios` - Start iOS development build
+- `npm run ios:tunnel` - Start iOS development build with tunnel
 - `npm run web` - Start web development build
 - `npm run lint` - Run ESLint
+- `npm run lint:fix` - Run ESLint with auto-fix
+- `npm run format` - Format code with Prettier
+- `npm run format:check` - Check Prettier formatting
+- `npm run type-check` - Run TypeScript type checking
 - `npm run reset-project` - Reset to blank project (moves starter code to app-example/)
 
 ## Architecture
 
-### File-based Routing
+### Technology Stack Integration
 
-- Routes are defined by files in the `/app` directory
-- Uses Expo Router with Stack navigation as the root layout
-- TypeScript path alias `@/*` maps to project root
+The project integrates several key technologies in a specific way:
 
-### Project Structure
+1. **Tamagui Provider Hierarchy**: `TamaguiProvider` wraps `PortalProvider` which wraps `ThemeProvider` in `app/_layout.tsx`
+2. **Theme System**: Automatic dark/light theme detection via `useColorScheme()` with React Navigation theme integration
+3. **Form Validation Pattern**: React Hook Form controller + Zod resolver + Tamagui UI components
+4. **Type Safety**: TypeScript strict mode with Zod schema inference for form data types
 
-- `/app` - Main application routes and screens
-- `/app-example` - Contains starter template code (components, hooks, constants)
+### File Structure
+
+- `/app` - Expo Router file-based routing (main application)
+- `/app-example` - Original Expo template code (preserved as reference)
+- `/components` - Reusable UI components (currently contains SampleForm)
+- `/schemas` - Zod validation schemas (contains sampleForm.ts as example)
 - `/assets` - Static assets (fonts, images)
-- `/components` - Reusable UI components (when not using starter template)
-- `/hooks` - Custom React hooks
-- `/constants` - App constants like colors
+- `tamagui.config.ts` - Tamagui configuration using default v4 config
 
-### Key Features
+### Key Implementation Patterns
 
-- New Architecture enabled for React Native
-- Cross-platform support (iOS, Android, Web)
-- Haptics, fonts, and image optimization via Expo modules
-- Automatic dark/light theme support
+**Form Handling Pattern:**
+
+```typescript
+// 1. Define Zod schema in /schemas
+export const schema = z.object({...})
+export type FormData = z.infer<typeof schema>
+
+// 2. Use with React Hook Form + Tamagui
+const { control, handleSubmit } = useForm<FormData>({
+  resolver: zodResolver(schema),
+  mode: 'onChange'
+})
+```
+
+**Tamagui Layout Workarounds:**
+
+- Use React Native `View` with `style` prop instead of Tamagui shorthand props (ai, jc) to avoid Babel parser errors
+- Pattern: `<View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>`
+
+**Component Integration:**
+
+- Import `Check` from `@tamagui/lucide-icons` for checkbox indicators
+- Use `Alert.alert` from React Native for simple notifications
+- Manual validation triggering with `trigger()` function for better UX
 
 ## 品質チェックとコミットの指針
 
@@ -85,4 +107,28 @@ pre-commit hooksにより、コミット時にも自動的に品質チェック�
 
 ## Development Notes
 
-The project includes a reset script that can move the example code to `/app-example` and create a minimal starting point. The current setup appears to be in a minimal state with basic routing already configured.
+### Pre-commit Setup
+
+The project uses Husky + lint-staged for automated code quality checks:
+
+- TypeScript/JavaScript files: ESLint with auto-fix + Prettier formatting
+- JSON/Markdown/YAML files: Prettier formatting only
+
+### Template Features
+
+- **Sample Form**: `/components/SampleForm.tsx` demonstrates React Hook Form + Zod + Tamagui integration
+- **Reset Script**: `npm run reset-project` moves example code to `/app-example` for clean project start
+- **TypeScript Configuration**: Strict mode enabled with path alias `@/*` mapping to project root
+
+### Known Issues & Workarounds
+
+1. **Tamagui Babel Parser**: Avoid object literals in style props; use React Native View component with style prop
+2. **Form Validation**: Use `mode: 'onChange'` and manual `trigger()` for real-time validation
+3. **Checkbox Icons**: Require explicit `<Check />` import from `@tamagui/lucide-icons`
+
+### Dependencies Overview
+
+- **Core**: Expo 53, React Native 0.79.5, React 19.0.0
+- **UI**: Tamagui 1.132.20 with Lucide icons and Portal provider
+- **Forms**: React Hook Form 7.62.0 + @hookform/resolvers 5.2.1 + Zod 4.0.17
+- **Development**: TypeScript 5.8.3, ESLint 9.25.0, Prettier 3.6.2, Husky 9.1.7

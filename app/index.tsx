@@ -16,6 +16,8 @@ import {
   YStack,
 } from 'tamagui';
 
+import SampleForm from '../components/SampleForm';
+
 export default function Index() {
   const [open, setOpen] = useState(false);
   const [switchOn, setSwitchOn] = useState(false);
@@ -142,6 +144,10 @@ export default function Index() {
               </Button>
             </XStack>
           </YStack>
+
+          <Separator borderColor="$borderColor" />
+
+          <SampleForm />
 
           <Sheet
             forceRemoveScrollEnabled={open}
