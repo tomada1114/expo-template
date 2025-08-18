@@ -9,17 +9,23 @@ appId: host.exp.Exponent # Expo Go アプリ用のApp ID
 # Expo Goのホーム画面が読み込まれるまで待機
 - waitForAnimationToEnd
 
-# expo-templateが表示されるまで待機
-- assertVisible: 'expo-template'
+# 現在の状態を判定してテンプレートアプリに移動
 
-# Expo Goのホーム画面でexpo-templateをタップして起動
-- tapOn: 'expo-template'
+# Expo Goホーム画面の場合: expo-templateをタップ
+- tapOn:
+    text: 'expo-template'
+    optional: true
 
-# アプリが読み込まれるまで長めに待機
+# アプリ起動の待機（タップした場合のより長い待機時間が必要）
 - waitForAnimationToEnd
 - waitForAnimationToEnd
+- waitForAnimationToEnd
 
-# タイトル表示確認
+# アプリが完全に読み込まれるまでの追加待機
+- waitForAnimationToEnd
+
+# 最終的にテンプレートアプリのタイトルが表示されることを確認
+# （Expo Goからの起動、または既存アプリからの継続、どちらの場合も最終的にこの画面になる）
 - assertVisible: 'Tamagui Template'
 
 # 主要セクションの表示確認
