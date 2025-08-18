@@ -80,6 +80,13 @@ const { control, handleSubmit } = useForm<FormData>({
 - Use `Alert.alert` from React Native for simple notifications
 - Manual validation triggering with `trigger()` function for better UX
 
+**Date Selection Pattern:**
+
+- Use `@react-native-community/datetimepicker` for Expo-compatible date selection
+- Always-visible calendar with `display={Platform.OS === 'ios' ? 'compact' : 'calendar'}`
+- Date formatting to YYYY-MM-DD format for form submission
+- Platform-specific handling for iOS/Android differences
+
 ## 品質チェックとコミットの指針
 
 ### 必須の品質チェック
@@ -131,4 +138,11 @@ The project uses Husky + lint-staged for automated code quality checks:
 - **Core**: Expo 53, React Native 0.79.5, React 19.0.0
 - **UI**: Tamagui 1.132.20 with Lucide icons and Portal provider
 - **Forms**: React Hook Form 7.62.0 + @hookform/resolvers 5.2.1 + Zod 4.0.17
+- **Date Selection**: @react-native-community/datetimepicker 8.4.1 (Expo-compatible)
 - **Development**: TypeScript 5.8.3, ESLint 9.25.0, Prettier 3.6.2, Husky 9.1.7
+
+### Expo Compatibility Notes
+
+- Use `npx expo install` for native dependencies to ensure SDK compatibility
+- `@react-native-community/datetimepicker` is preferred over `react-native-date-picker` for Expo environments
+- Avoid native libraries that require manual linking; prefer Expo-managed dependencies

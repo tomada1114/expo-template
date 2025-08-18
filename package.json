@@ -51,7 +51,8 @@
     "react-native-web": "~0.20.0",
     "react-native-webview": "13.13.5",
     "tamagui": "^1.132.20",
-    "zod": "^4.0.17"
+    "zod": "^4.0.17",
+    "@react-native-community/datetimepicker": "8.4.1"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

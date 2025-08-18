@@ -1,7 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Check } from '@tamagui/lucide-icons';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { Check, Calendar } from '@tamagui/lucide-icons';
+import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Alert, View } from 'react-native';
+import { Alert, View, Platform } from 'react-native';
 import {
   Button,
   Card,
@@ -25,6 +27,8 @@ import {
 } from '../schemas/sampleForm';
 
 export default function SampleForm() {
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
   const {
     control,
     handleSubmit,
@@ -60,6 +64,13 @@ export default function SampleForm() {
     if (isValid) {
       handleSubmit(onSubmit)();
     }
+  };
+
+  const formatDate = (date: Date): string => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   };
 
   return (
@@ -333,7 +344,7 @@ export default function SampleForm() {
 
           {/* 日付選択 */}
           <YStack gap="$2">
-            <Label htmlFor="selectedDate" color="$color12">
+            <Label color="$color12">
               日付選択{' '}
               <Paragraph color="$red10" tag="span">
                 *
@@ -343,13 +354,39 @@ export default function SampleForm() {
               name="selectedDate"
               control={control}
               render={({ field }) => (
-                <Input
-                  id="selectedDate"
-                  placeholder="YYYY-MM-DD"
-                  value={field.value}
-                  onChangeText={field.onChange}
-                  borderColor={errors.selectedDate ? '$red8' : '$borderColor'}
-                />
+                <YStack gap="$2">
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      gap: 8,
+                      paddingVertical: 8,
+                    }}
+                  >
+                    <Calendar size={16} color="$color11" />
+                    <Paragraph color="$color11" size="$3">
+                      選択された日付: {field.value || '未選択'}
+                    </Paragraph>
+                  </View>
+                  <DateTimePicker
+                    value={selectedDate}
+                    mode="date"
+                    display={Platform.OS === 'ios' ? 'compact' : 'calendar'}
+                    onChange={(event, date) => {
+                      if (date) {
+                        setSelectedDate(date);
+                        field.onChange(formatDate(date));
+                      }
+                    }}
+                    style={{
+                      borderColor: errors.selectedDate
+                        ? '#dc2626'
+                        : 'transparent',
+                      borderWidth: errors.selectedDate ? 1 : 0,
+                      borderRadius: 8,
+                    }}
+                  />
+                </YStack>
               )}
             />
             {errors.selectedDate && (

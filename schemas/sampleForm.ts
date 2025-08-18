@@ -40,8 +40,14 @@ export const sampleFormSchema = z.object({
     message: '利用規約に同意してください',
   }),
 
-  // 日付選択
-  selectedDate: z.string().min(1, '日付を選択してください'),
+  // 日付選択（YYYY-MM-DD形式）
+  selectedDate: z
+    .string()
+    .min(1, '日付を選択してください')
+    .regex(
+      /^\d{4}-\d{2}-\d{2}$/,
+      '正しい日付形式（YYYY-MM-DD）で入力してください'
+    ),
 
   // オプショナルなテキストエリア
   comments: z.string().max(500, '500文字以下で入力してください').optional(),
@@ -55,5 +61,6 @@ export const defaultValues: Partial<SampleFormData> = {
   email: '',
   preferences: [],
   agreement: false,
+  selectedDate: '',
   comments: '',
 };
