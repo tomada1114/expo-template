@@ -1,5 +1,6 @@
 import { sampleFormSchema } from '../../schemas/sampleForm';
 
+// Basic schema validation tests
 describe('SampleForm schema validation', () => {
   it('should validate required fields', () => {
     const invalidData = {
