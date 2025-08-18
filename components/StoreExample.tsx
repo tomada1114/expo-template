@@ -4,14 +4,21 @@ import { Button, Card, H3, Paragraph, XStack, YStack } from 'tamagui';
 import { useExampleStore, type User } from '../stores';
 
 export default function StoreExample() {
-  const { count, user, increment, decrement, reset, setUser, clearUser } =
-    useExampleStore();
+  const counter = useExampleStore(state => state.counter);
+  const user = useExampleStore(state => state.user);
+  const isLoggedIn = useExampleStore(state => state.user !== null);
+  const increment = useExampleStore(state => state.increment);
+  const decrement = useExampleStore(state => state.decrement);
+  const setCounter = useExampleStore(state => state.setCounter);
+  const reset = useExampleStore(state => state.reset);
+  const setUser = useExampleStore(state => state.setUser);
+  const clearUser = useExampleStore(state => state.clearUser);
 
   const handleSetUser = () => {
     const newUser: User = {
       id: '1',
-      name: 'John Doe',
-      email: 'john@example.com',
+      name: 'サンプルユーザー',
+      email: 'sample@example.com',
     };
     setUser(newUser);
     Alert.alert('Success', 'User has been set!');
@@ -29,16 +36,17 @@ export default function StoreExample() {
 
         <Card padding="$3" backgroundColor="$background">
           <YStack space="$2">
-            <Paragraph fontWeight="bold">Counter: {count}</Paragraph>
+            <H3>カウンター機能</H3>
+            <Paragraph fontWeight="bold">カウンター: {counter}</Paragraph>
             <XStack space="$2">
               <Button onPress={increment} theme="blue" flex={1}>
-                +1
+                増加
               </Button>
               <Button onPress={decrement} theme="red" flex={1}>
-                -1
+                減少
               </Button>
-              <Button onPress={reset} theme="yellow" flex={1}>
-                Reset
+              <Button onPress={() => setCounter(10)} theme="green" flex={1}>
+                10にセット
               </Button>
             </XStack>
           </YStack>
@@ -46,23 +54,39 @@ export default function StoreExample() {
 
         <Card padding="$3" backgroundColor="$background">
           <YStack space="$2">
-            <Paragraph fontWeight="bold">User Info:</Paragraph>
+            <H3>ユーザー管理</H3>
+            <Paragraph fontWeight="bold">
+              ログイン状態: {isLoggedIn ? 'ログイン中' : 'ログアウト中'}
+            </Paragraph>
             {user ? (
               <YStack space="$1">
-                <Paragraph>Name: {user.name}</Paragraph>
-                <Paragraph>Email: {user.email}</Paragraph>
+                <Paragraph>
+                  ユーザー: {user.name} ({user.email})
+                </Paragraph>
               </YStack>
             ) : (
-              <Paragraph color="$color11">No user set</Paragraph>
+              <Paragraph color="$color11">ユーザー: 未ログイン</Paragraph>
             )}
             <XStack space="$2">
-              <Button onPress={handleSetUser} theme="blue" flex={1}>
-                Set User
-              </Button>
-              <Button onPress={handleClearUser} theme="red" flex={1}>
-                Clear User
-              </Button>
+              {!user ? (
+                <Button onPress={handleSetUser} theme="blue" flex={1}>
+                  サンプルユーザーでログイン
+                </Button>
+              ) : (
+                <Button onPress={handleClearUser} theme="red" flex={1}>
+                  ログアウト
+                </Button>
+              )}
             </XStack>
+          </YStack>
+        </Card>
+
+        <Card padding="$3" backgroundColor="$background">
+          <YStack space="$2">
+            <H3>リセット機能</H3>
+            <Button onPress={reset} theme="yellow">
+              全てリセット
+            </Button>
           </YStack>
         </Card>
 

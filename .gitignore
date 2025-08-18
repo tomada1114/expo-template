@@ -36,4 +36,9 @@ yarn-error.*
 # typescript
 *.tsbuildinfo
 
+# testing
+coverage/
+*.lcov
+.nyc_output
+
 app-example

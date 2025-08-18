@@ -11,7 +11,10 @@
       "Bash(npm run type-check:*)",
       "Bash(git add:*)",
       "Bash(npm run lint:*)",
-      "Bash(npx expo install:*)"
+      "Bash(npx expo install:*)",
+      "Bash(npm test)",
+      "Bash(npm test:*)",
+      "Bash(npx eslint:*)"
     ],
     "deny": [],
     "ask": []
