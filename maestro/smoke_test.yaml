@@ -1,0 +1,79 @@
+# Smoke Test for Expo Template
+# 基本的な表示確認とインタラクションのテスト
+
+appId: host.exp.Exponent # Expo Go アプリ用のApp ID
+---
+# Expo Go起動
+- launchApp
+
+# Expo Goのホーム画面が読み込まれるまで待機
+- waitForAnimationToEnd
+
+# expo-templateが表示されるまで待機
+- assertVisible: 'expo-template'
+
+# Expo Goのホーム画面でexpo-templateをタップして起動
+- tapOn: 'expo-template'
+
+# アプリが読み込まれるまで長めに待機
+- waitForAnimationToEnd
+- waitForAnimationToEnd
+
+# タイトル表示確認
+- assertVisible: 'Tamagui Template'
+
+# 主要セクションの表示確認
+- assertVisible: 'カードコンポーネント'
+- assertVisible: 'ボタンコンポーネント'
+
+# 少しスクロールして他の要素を確認
+- scroll
+
+# スクロール後の要素確認
+- waitForAnimationToEnd
+- assertVisible: 'インタラクティブコンポーネント'
+- assertVisible: 'テーマ切り替え'
+
+# ボタンの動作確認
+- assertVisible: 'デフォルト'
+- assertVisible: 'ブルー'
+- assertVisible: 'グリーン'
+
+# スイッチの表示確認
+- assertVisible: 'スイッチ:'
+- assertVisible: 'OFF'
+
+# シートを開くボタンのテスト
+- tapOn: 'シートを開く'
+
+# シートが開かれるまで待機
+- waitForAnimationToEnd
+- assertVisible: 'シートコンポーネント'
+- assertVisible: '閉じる'
+
+# シートを閉じる
+- tapOn: '閉じる'
+
+# シートが閉じられるまで待機
+- waitForAnimationToEnd
+
+# テーマ切り替えセクションまでスクロール
+- scroll
+
+# スクロール完了を待機
+- waitForAnimationToEnd
+
+# テーマ切り替えのテスト
+- assertVisible: 'ダーク'
+- tapOn: 'ダーク'
+
+# テーマ変更の待機
+- waitForAnimationToEnd
+
+- assertVisible: 'ライト'
+- tapOn: 'ライト'
+
+# テーマ変更の待機
+- waitForAnimationToEnd
+# 基本的なテスト完了
+# 追加のコンテンツ確認は必要に応じて後で追加可能
