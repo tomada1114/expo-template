@@ -54,14 +54,36 @@ npm run android
 
 ### 基本実行
 
+#### すべてのテストシナリオを実行
+
 ```bash
 npm run maestro:test
 ```
 
-または
+#### 特定のテストファイルを指定
 
 ```bash
-maestro test maestro/smoke_test.yaml
+npm run maestro:test:file maestro/smoke_test.yaml
+npm run maestro:test:file maestro/specific_test.yaml
+```
+
+**使用例**:
+
+```bash
+# すべてのテストシナリオを実行
+npm run maestro:test
+
+# 特定のシナリオのみ実行
+npm run maestro:test:file maestro/smoke_test.yaml
+npm run maestro:test:file maestro/login_test.yaml
+npm run maestro:test:file maestro/form_validation_test.yaml
+```
+
+または直接Maestro CLIを使用:
+
+```bash
+maestro test maestro/                    # すべてのテスト
+maestro test maestro/smoke_test.yaml    # 特定のテスト
 ```
 
 **注意**: アプリの起動には時間がかかる場合があります。テストには適切な待機時間が設定されているため、通常は2-3分程度で完了します。

@@ -49,6 +49,12 @@ This is an Expo React Native template project featuring:
 - `jest [filename]` - Run specific test file
 - `jest --findRelatedTests [filename]` - Run tests related to specific source file
 
+### E2E Testing (Maestro)
+
+- `npm run maestro:test` - Run all test scenarios in maestro/ directory
+- `npm run maestro:test:file <filepath>` - Run specific test file
+- `npm run maestro:studio` - Launch Maestro Studio for interactive testing
+
 ## Architecture
 
 ### Technology Stack Integration
@@ -239,3 +245,106 @@ const result = schema.safeParse(testData);
 - Use `npx expo install` for native dependencies to ensure SDK compatibility
 - `@react-native-community/datetimepicker` is preferred over `react-native-date-picker` for Expo environments
 - Avoid native libraries that require manual linking; prefer Expo-managed dependencies
+
+## テスト戦略 (Testing Strategy)
+
+### テストの種類と責務分担
+
+#### 1. 単体テスト (Unit Tests) - `npm test`
+
+**モック対象**: Tamagui UI、AsyncStorage、Navigation
+**テスト対象**:
+
+- **ビジネスロジック**: 純粋な関数、計算処理
+- **Zodスキーマ**: 各フィールドのバリデーションルール
+- **Zustandアクション**: increment、decrement、reset等の個別アクション
+- **データ変換**: 日付フォーマット、型変換処理
+
+**例**:
+
+```typescript
+// schemas/__tests__/sampleForm.test.ts
+it('should validate email format', () => {
+  const result = schema.safeParse({ email: 'invalid' });
+  expect(result.success).toBe(false);
+});
+```
+
+#### 2. 結合テスト (Integration Tests) - `npm test`
+
+**部分モック**: UIライブラリのみモック、ロジックは実装使用
+**テスト対象**:
+
+- **フォーム統合**: React Hook Form + Zod + UI操作の連携
+- **状態管理統合**: コンポーネントとZustandストアの相互作用
+- **永続化**: AsyncStorageへの保存・読み込み
+- **エラーハンドリング**: バリデーションエラーの表示
+
+**例**:
+
+```typescript
+// components/__tests__/SampleForm.test.tsx
+it('should submit form with valid data', async () => {
+  fireEvent.changeText(getByPlaceholder('名前'), 'テスト太郎');
+  fireEvent.press(getByText('送信'));
+  await waitFor(() => expect(Alert.alert).toHaveBeenCalled());
+});
+```
+
+#### 3. E2Eテスト (End-to-End Tests) - `npm run maestro:test`
+
+**実機環境**: シミュレーター/エミュレーターで実行
+**テスト対象**:
+
+- **クリティカルパス**: アプリ起動→主要機能の利用
+- **視覚的確認**: UIコンポーネントの実際の表示
+- **ネイティブ機能**: シート、モーダル、アニメーション
+- **ユーザーフロー**: 実際の操作順序での動作確認
+
+**例**:
+
+```yaml
+# maestro/smoke_test.yaml
+- launchApp
+- assertVisible: 'Tamagui Template'
+- tapOn: 'シートを開く'
+- assertVisible: 'シートコンポーネント'
+```
+
+### テスト実行の指針
+
+1. **開発中**:
+   - 変更したファイルの単体テスト: `jest --findRelatedTests [file]`
+   - 関連コンポーネントの結合テスト: `npm test [component]`
+
+2. **コミット前**:
+   - 全単体・結合テスト: `npm test`
+   - 品質チェック: `npm run lint && npm run type-check`
+
+3. **機能完成時**:
+   - 全E2Eテスト: `npm run maestro:test`
+   - 特定シナリオ: `npm run maestro:test:file maestro/[scenario].yaml`
+   - カバレッジ確認: `npm run test:coverage`
+
+### モック戦略
+
+| ライブラリ          | 単体テスト      | 結合テスト      | E2Eテスト           |
+| ------------------- | --------------- | --------------- | ------------------- |
+| **Tamagui UI**      | ✅ 完全モック   | ✅ 完全モック   | ❌ 実コンポーネント |
+| **AsyncStorage**    | ✅ メモリモック | ✅ メモリモック | ❌ 実ストレージ     |
+| **Navigation**      | ✅ 関数モック   | ⚠️ 部分モック   | ❌ 実ナビゲーション |
+| **Zustand**         | ❌ 実装使用     | ❌ 実装使用     | ❌ 実装使用         |
+| **React Hook Form** | ❌ 実装使用     | ❌ 実装使用     | ❌ 実装使用         |
+| **Zod**             | ❌ 実装使用     | ❌ 実装使用     | ❌ 実装使用         |
+
+### テストファイル配置
+
+```
+├── components/__tests__/        # コンポーネントの結合テスト
+│   ├── *.test.tsx              # 詳細な結合テスト
+│   └── *.simple.test.tsx       # 基本的な表示テスト
+├── schemas/__tests__/           # スキーマの単体テスト
+├── stores/__tests__/            # ストアの単体・結合テスト
+└── maestro/                     # E2Eテスト
+    └── smoke_test.yaml          # 基本動作確認
+```
