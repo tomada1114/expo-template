@@ -18,8 +18,11 @@ This is an Expo React Native template project featuring:
 - **React Hook Form + Zod** for form validation
 - **Zustand** for global state management with persistence
 - **ESLint + Prettier** with comprehensive code quality setup
+- **Jest + Testing Library** for unit and integration testing
 
 ## Development Commands
+
+### Build and Development
 
 - `npm install` - Install dependencies
 - `npm start` or `npx expo start` - Start development server
@@ -27,12 +30,24 @@ This is an Expo React Native template project featuring:
 - `npm run ios` - Start iOS development build
 - `npm run ios:tunnel` - Start iOS development build with tunnel
 - `npm run web` - Start web development build
+- `npm run reset-project` - Reset to blank project (moves starter code to app-example/)
+
+### Code Quality
+
 - `npm run lint` - Run ESLint
 - `npm run lint:fix` - Run ESLint with auto-fix
 - `npm run format` - Format code with Prettier
 - `npm run format:check` - Check Prettier formatting
 - `npm run type-check` - Run TypeScript type checking
-- `npm run reset-project` - Reset to blank project (moves starter code to app-example/)
+
+### Testing
+
+- `npm test` - Run all tests
+- `npm run test:watch` - Run tests in watch mode
+- `npm run test:coverage` - Run tests with coverage report
+- `npm run test:ci` - Run tests in CI mode (optimized for CI/CD pipelines)
+- `jest [filename]` - Run specific test file
+- `jest --findRelatedTests [filename]` - Run tests related to specific source file
 
 ## Architecture
 
@@ -133,6 +148,7 @@ const action = useStore(state => state.action);
 2. **TypeScriptチェック**: `npm run type-check`
 3. **Prettierフォーマット**: `npm run format`
 4. **フォーマット確認**: `npm run format:check`
+5. **テスト実行**: `npm test` (全56テストが成功すること)
 
 これらのチェックはすべてパスする必要があります。エラーがある場合は修正してから次の工程に進んでください。
 
@@ -154,8 +170,9 @@ pre-commit hooksにより、コミット時にも自動的に品質チェック�
 
 The project uses Husky + lint-staged for automated code quality checks:
 
-- TypeScript/JavaScript files: ESLint with auto-fix + Prettier formatting
+- TypeScript/JavaScript files: ESLint with auto-fix + Prettier formatting + Related tests execution
 - JSON/Markdown/YAML files: Prettier formatting only
+- Tests are automatically run for changed files using `jest --findRelatedTests`
 
 ### Template Features
 
@@ -179,6 +196,43 @@ The project uses Husky + lint-staged for automated code quality checks:
 - **State Management**: Zustand 5.0.7 with AsyncStorage 2.1.2 for persistence
 - **Date Selection**: @react-native-community/datetimepicker 8.4.1 (Expo-compatible)
 - **Development**: TypeScript 5.8.3, ESLint 9.25.0, Prettier 3.6.2, Husky 9.1.7
+- **Testing**: Jest 29.7.0 with jest-expo preset, @testing-library/react-native 12.9.0
+
+## Testing Environment
+
+### Test Structure
+
+- `/schemas/__tests__/` - Schema validation tests (Zod schemas)
+- `/stores/__tests__/` - Store tests (Zustand state management)
+- `/components/__tests__/` - Component tests (UI and integration)
+
+### Test Configuration
+
+- **jest.config.js**: Configured with jest-expo preset and jsdom environment
+- **jest.setup.js**: Global test setup with mocks for Tamagui, AsyncStorage, and other dependencies
+- **Coverage threshold**: 50% for all metrics (branches, functions, lines, statements)
+
+### Writing Tests
+
+```typescript
+// Component tests
+import { render, fireEvent } from '@testing-library/react-native';
+
+// Store tests with AsyncStorage persistence
+import { renderHook, act } from '@testing-library/react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+// Schema validation tests
+import { schema } from '../schemas/schemaName';
+const result = schema.safeParse(testData);
+```
+
+### Test Mocking Strategy
+
+- **Tamagui components**: Mocked with React Native base components (View, Text, TextInput)
+- **@tamagui/lucide-icons**: Mocked as simple View components with testID
+- **AsyncStorage**: Mocked using official jest mock from @react-native-async-storage/async-storage
+- **Navigation**: Basic navigation methods mocked (@react-navigation/native)
 
 ### Expo Compatibility Notes
 
